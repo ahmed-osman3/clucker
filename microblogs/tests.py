@@ -94,8 +94,7 @@ class UserModelTestCase(TestCase):
         self.user.email = "johndoe.example.org"
         self.__assert_user_is_invalid()
        
-
-
+    
 
 
     def __assert_user_is_valid(self):
