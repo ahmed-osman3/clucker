@@ -1,4 +1,5 @@
 import imp
+from tkinter import FALSE
 from django import forms
 from django import forms
 from .models import User
@@ -41,4 +42,16 @@ class SignUpForm(forms.ModelForm):
         password_confirmation = self.cleaned_data.get('password_confirmation')
         if password != password_confirmation:
             self.add_error('password_confirmation','Conirmation does not match password')
-         
+        
+    
+    def save(self):
+        super().save(commit=False)
+        user = User.objects.create_user(
+            self.cleaned_data.get('username'),
+            first_name = self.cleaned_data.get('first_name'),
+            last_name = self.cleaned_data.get('last_name'),
+            email = self.cleaned_data.get('email'),
+            bio = self.cleaned_data.get('bio'),
+            password = self.cleaned_data.get('password'),
+         )
+        return user

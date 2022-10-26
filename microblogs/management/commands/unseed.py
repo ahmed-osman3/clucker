@@ -10,5 +10,5 @@ class Command(BaseCommand):
     def handle(self,*args,**options):
         
         for i in User.objects.all():
-            if(i.username != "@admin"):
+            if(i.username != "@admin" or i.username != "@aosman11" ):
                 i.delete()
