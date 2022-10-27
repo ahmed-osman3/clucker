@@ -7,7 +7,7 @@ from .helpers import LogInTester
 from django.contrib import messages
 
 class LogInViewTestCase(TestCase,LogInTester):
-    """Test of the sign up view"""
+    """Test of the Log in  view"""
     
     def setUp(self):
         self.url = reverse('log_in')
