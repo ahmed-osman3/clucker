@@ -4,8 +4,9 @@ from django.test import TestCase
 from django.urls import reverse
 from microblogs.forms import SignUpForm
 from microblogs.forms import User
+from .helpers import LogInTester
 
-class SignUpViewTestCase(TestCase):
+class SignUpViewTestCase(TestCase,LogInTester):
     """Test of the sign up view"""
     
     def setUp(self):
@@ -39,6 +40,8 @@ class SignUpViewTestCase(TestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form,SignUpForm))
         self.assertTrue(form.is_bound)
+        self.assertFalse(self._is_logged_in())
+        
 
     def test_succesful_sign_up(self):
         before_count = User.objects.count()
@@ -55,6 +58,7 @@ class SignUpViewTestCase(TestCase):
         self.assertEqual(user.bio,'My bio')
         is_password_correct = check_password('Password123',user.password)
         self.assertTrue(is_password_correct)
+        self.assertTrue(self._is_logged_in())
 
 
 
