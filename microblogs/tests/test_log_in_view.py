@@ -4,6 +4,7 @@ from django.urls import reverse
 from microblogs.forms import LogInForm
 from microblogs.models import User
 from .helpers import LogInTester
+from django.contrib import messages
 
 class LogInViewTestCase(TestCase,LogInTester):
     """Test of the sign up view"""
@@ -28,6 +29,7 @@ class LogInViewTestCase(TestCase,LogInTester):
         form = response.context['form']
         self.assertTrue(isinstance(form,LogInForm))
         self.assertFalse(form.is_bound)
+        
     
     def test_unsuccesful_log_in(self):
         form_input = {'username':'@johndoe','password':'WrongPassword'}
@@ -38,6 +40,9 @@ class LogInViewTestCase(TestCase,LogInTester):
         self.assertTrue(isinstance(form,LogInForm))
         self.assertFalse(form.is_bound)
         self.assertFalse(self._is_logged_in())
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list),1)
+        self.assertEqual(messages_list[0].level, messages.ERROR)
 
     def test_succesful_log_in(self):
         form_input = {'username':'@johndoe','password':'Password123'}
@@ -46,6 +51,8 @@ class LogInViewTestCase(TestCase,LogInTester):
         response_url = reverse('feed')
         self.assertRedirects(response,response_url,status_code=302,target_status_code=200)
         self.assertTemplateUsed(response,'feed.html')
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list),0)
 
     def test_valid_log_in_by_inactive_user(self):
         self.user.is_active = False
@@ -58,6 +65,10 @@ class LogInViewTestCase(TestCase,LogInTester):
         self.assertTrue(isinstance(form,LogInForm))
         self.assertFalse(form.is_bound)
         self.assertFalse(self._is_logged_in())
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list),1)
+        self.assertEqual(messages_list[0].level, messages.ERROR)
+
 
 
 
