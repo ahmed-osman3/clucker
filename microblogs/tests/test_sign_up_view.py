@@ -54,7 +54,6 @@ class SignUpViewTestCase(TestCase):
         self.assertEqual(user.email,'janedoe@example.org')
         self.assertEqual(user.bio,'My bio')
         is_password_correct = check_password('Password123',user.password)
-        # check_password('Password123',user.password_confirmation)
         self.assertTrue(is_password_correct)
 
 

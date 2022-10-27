@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 
-from microblogs.forms import SignUpForm
+from microblogs.forms import LogInForm, SignUpForm
 
 
 
@@ -22,4 +22,5 @@ def sign_up(request):
 
 
 def log_in(request):
-   return render(request,'log_in.html')
+   form = LogInForm()
+   return render(request,'log_in.html',{'form':form})
